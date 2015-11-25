@@ -19,7 +19,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.CreateNewNote"
+            android:name=".activity.UpdateNoteActivity"
             android:parentActivityName="by.khrapovitsky.activity.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

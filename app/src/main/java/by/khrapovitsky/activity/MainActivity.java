@@ -1,6 +1,7 @@
 package by.khrapovitsky.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -26,6 +27,8 @@ import by.khrapovitsky.model.Note;
 import by.khrapovitsky.model.NoteRepository;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+
+    public final static int REQ_CODE_CHILD = 1;
 
     private List<Note> notes = NoteRepository.GetNotes();
     ArrayAdapter<Note> adapter = null;
@@ -68,6 +71,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Toast.makeText(getApplicationContext(), "Note has successfully deleted", Toast.LENGTH_LONG).show();
                 return true;
             case R.id.action_update:
+                Intent intent = new Intent(this, UpdateNoteActivity.class);
+                intent.putExtra("note", notes.get(info.position));
+                Integer tmp = info.position;
+                intent.putExtra("index",tmp.toString());
+                startActivityForResult(intent, REQ_CODE_CHILD);
                 return true;
             default:
                 super.onContextItemSelected(item);
@@ -93,6 +101,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             default:
                 break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (data == null) {
+            return;
+        }
+        if(requestCode == REQ_CODE_CHILD) {
+            switch (resultCode) {
+                case RESULT_OK:
+                    Note note = (Note) data.getExtras().getSerializable("note");
+                    notes.set(Integer.parseInt(data.getExtras().getString("index")), note);
+                    adapter.notifyDataSetChanged();
+                    Toast.makeText(getApplicationContext(), "Note has successfully updated", Toast.LENGTH_LONG).show();
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

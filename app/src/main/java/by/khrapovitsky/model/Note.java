@@ -1,10 +1,11 @@
 package by.khrapovitsky.model;
 
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Note {
+public class Note implements Serializable{
 
     static Integer currentId = 0;
 
@@ -47,7 +48,7 @@ public class Note {
 
     @Override
     public String toString() {
-        SimpleDateFormat date = new SimpleDateFormat ("yyyy.mm.dd hh:mm:ss");
+        SimpleDateFormat date = new SimpleDateFormat ("dd.MM.yyyy hh:mm:ss");
         return this.id + ". " + this.noteText + " [Date: " + date.format(this.lastDateModify) + "]";
     }
 }
